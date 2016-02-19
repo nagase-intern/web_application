@@ -1,0 +1,11 @@
+%h1 New Task
+
+%frorm.form-borizontal(method='post' action='/tasks')
+  .control-group
+    %label.control-label(for='task_name') Name
+    .controls
+      %input#task_name.span3(name='name' placeholder='例：買い物' type='text'){value: @task.name}
+  .control-group
+    %label.control-label(for='task_content') Content
+    .controls
+    
