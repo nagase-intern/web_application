@@ -1,11 +1,8 @@
 %h1 New Task
 
-%frorm.form-borizontal(method='post' action='/tasks')
+!= haml :_errors, locals: {task: @task}
+%form.form-horizontal(method='post' action='/tasks')
+  != haml :_form, locals: {task: @task}
   .control-group
-    %label.control-label(for='task_name') Name
     .controls
-      %input#task_name.span3(name='name' placeholder='例：買い物' type='text'){value: @task.name}
-  .control-group
-    %label.control-label(for='task_content') Content
-    .controls
-    
+      %input.btn(name='commit' type='submit' value='Create')

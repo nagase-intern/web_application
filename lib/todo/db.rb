@@ -6,8 +6,8 @@ require 'active_record'
 module Todo
   module DB
     def self.prepare
-      database_path = File.join(ENV['HOME'],'.todo', 'todo.sqlite3')
-      #database_path = File.expand_path("../dbt/todo.sqlite3", __FILE__)
+      #database_path = File.join(ENV['HOME'],'.todo', 'todo.sqlite3')
+      database_path = File.expand_path("../dbt/todo.sqlite3", __FILE__)
 
       connect_database database_path
       create_table_if_not_exists database_path

@@ -8,12 +8,11 @@ module Todo
 
       def self.parse!(argv)
         options = {}
-        sub_command_parsers = create_sub_command_parsers
+        sub_command_parsers = create_sub_command_parsers(options)
         command_parser      = create_command_parser
         begin
           command_parser.order!(argv)
           options[:command] = argv.shift
-          p "c"
           sub_command_parsers[options[:command]].parse!(argv)
           if %w(update delete).include?(options[:command])
             raise ArgumentError, "#{options[:command]} id not found." if argv.empty?
@@ -25,7 +24,7 @@ module Todo
         options
       end
 
-      def self.create_sub_command_parsers
+      def self.create_sub_command_parsers(options)
         sub_command_parsers = Hash.new do |k,v|
           raise ArgumentError, "'#{v}' is not todo sub command."
         end
@@ -56,6 +55,12 @@ module Todo
           opt.on_tail('-h', '--help', 'Show this message') {|v| help_sub_command(opt) }
         end
 
+        sub_command_parsers['server'] = OptionParser.new do |opt|
+          opt.banner = 'Usage: server <args>'
+          opt.on('-p VAL', '--port=VAL','Port(default:9292)'){|v| options[:port] = v }
+          opt.on_tail('-h', '--help', 'Show this message') {|v| help_sub_command(opt) }
+        end
+
         sub_command_parsers
       end
 
@@ -70,7 +75,8 @@ module Todo
             {name: 'create -n name -c content',             summary: 'Create Todo Task'},
             {name: 'update id -n name -c content -s status',summary: 'Update Todo Task'},
             {name: 'list -s status',                       summary: 'List Todo Tasks'},
-            {name: 'delete id',                             summary: 'Delete Todo Task'}
+            {name: 'delete id',                             summary: 'Delete Todo Task'},
+            {name: 'server -p port',                        summary: 'Start http server process'}
           ]
           opt.banner = "Usage: #{opt.program_name}[-h|--help][-v|--version]<command>[<args>]"
           opt.separator ''
