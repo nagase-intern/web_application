@@ -1,9 +1,1 @@
 ruby sinatora_test.rb -p $PORT -o $IP
-
--@tasks.each do |task|
-          %tr
-              %td = task.id
-              %td = task.name
-              %td = task.content
-              %td = task.status
-              %td = task.created_at.strftime('%Y/%m/%d %H:%M:%S')

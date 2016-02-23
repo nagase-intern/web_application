@@ -2,7 +2,7 @@
   %head
     %meta(charset='utf-8')
     %title Todo Application
-    %link(href='css/bootstrap.min.css' rel='stylesheet' type='text/css')
+    %link(href='/css/bootstrap.min.css' rel='stylesheet' type='text/css')
   %body
     .navbar.navbar-inner
       %a.brand(href='/tasks') Todo Application
@@ -15,6 +15,5 @@
           %a(href='/tasks?status=pending') PNDONG Tasks
         %li{class: ('active' if  @status = 'done')}
           %a(href='/tasks?status=done') DONE Tasks
-          
-    .container
-      != yield
+  .container
+    != yield

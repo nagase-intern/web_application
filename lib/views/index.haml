@@ -10,11 +10,18 @@
       %th Contennt
       %th Status
       %th Created Time
+      %th(colspan=2) Action
   %tbody
     - @tasks.each do |task|
       %tr
-      %td= task.id
-      %td= task.name
-      %td= task.content
-      %td= task.status
-      %td= task.created_at.strftime('%Y/%m/%d %H:%M:%S')
+        %td= task.id
+        %td= task.name
+        %td= task.content
+        %td= task.status_name
+        %td= task.created_at.strftime('%Y/%m/%d %H:%M:%S')
+        %td 
+          %a{href: "/tasks/#{task.id}/edit"}Edit
+        %td
+          %form.form-inline(method='post'){action: "/tasks/#{task.id}"}
+            %input(name='_method' type='hidden' value='delete')
+            %input.btn.btn-banger(type='submit' value='Delete' onclick='return coonfirm("Delete Task?")')

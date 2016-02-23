@@ -12,10 +12,15 @@ module Todo
     end
 
     def execute
-      p "aaa"
       options = Options.parse!(@argv)
       sub_command = options.delete(:command)
-      puts sub_command
+      if sub_command == 'server'
+        puts 'Start server process...'
+        port_option = options[:port].nil? ? '' : "-p #{options[:port]}"
+        
+        config = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'config.ru'))
+        exec "cd #{File.dirname(config)} && rackup -E production #{port_option} #{config}"
+      end
       DB.prepare
 
       tasks = case sub_command
@@ -72,18 +77,18 @@ module Todo
       puts header
       puts '-' * header.size
       Array(tasks).each do |task|
-        puts display_format(task.id, task.name, task.content, task.status)
+        puts display_format(task.id, task.name, task.content, task.status_name)
       end
     end
 
     def display_format(id, name, content, status)
       name_length = 20 - full_width_count(name)
       content_length = 40 - full_width_count(content)
-      [id.to_s.rjust(4), name.ljust(name_length), content.ljust(content_length), status].join(' | ')
+      [id.to_s.rjust(4), name.ljust(name_length), content.ljust(content_length), status.center(10)].join(' | ')
     end
 
     def full_width_count(string)
-      string.each_char.select{|char| !(/[ -~。-゜]/.match(char)) }.count
+      string.each_char.select{ |char| !(/[ -~。-゜]/.match(char)) }.count
     end
   end
 end
